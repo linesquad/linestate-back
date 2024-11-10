@@ -18,6 +18,7 @@ app.use("/api/posts", postRoute);
 app.use("/api/auth", authRoute);
 app.use("/api/test", testRoute);
 app.use("/api/users", userRoute);
+app.use("/api/posts", postRoute);
 
 app.listen(process.env.DEV_PORT || 8000, () => {
   console.log(`Server is running on port ${process.env.DEV_PORT || 8000}`);

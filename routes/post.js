@@ -1,33 +1,28 @@
 import express from "express";
+import { verifyToken } from "../middleware/verifyToken.js";
+import {
+  createPost,
+  deletePost,
+  getPost,
+  getPosts,
+  updatePost,
+} from "../handlers/posthandler.js";
 
 const router = express.Router();
 
 // get posts
-router.get("/test", (req, res) => {
-  res.status(200);
-  res.send("posts");
-  console.log("posts");
-});
+router.get("/", getPosts);
 
-// create posts
-router.post("/test", (req, res) => {
-  res.status(200);
-  res.send("posts");
-  console.log("posts");
-});
+// get post
+router.get("/:id", getPost);
 
-// update posts
-router.put("/test", (req, res) => {
-  res.status(200);
-  res.send("posts");
-  console.log("posts");
-});
+// create post
+router.post("/", verifyToken, createPost);
 
-// delete posts
-router.delete("/test", (req, res) => {
-  res.status(200);
-  res.send("posts");
-  console.log("posts");
-});
+// update post
+router.put("/:id", verifyToken, updatePost);
+
+// delete post
+router.delete("/:id", verifyToken, deletePost);
 
 export default router;
