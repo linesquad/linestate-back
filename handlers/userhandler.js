@@ -61,7 +61,9 @@ export const updateUser = async (req, res) => {
       return res.status(404).json({ message: "user not found" });
     }
 
-    res.status(200).json(updatedUser);
+    const { password: _, ...userWithoutPassword } = updatedUser;
+
+    res.status(200).json(userWithoutPassword);
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "failed to update user" });
