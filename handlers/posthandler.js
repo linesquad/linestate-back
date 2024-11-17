@@ -1,4 +1,5 @@
 import prisma from "../lib/prisma.js";
+import jwt from "jsonwebtoken";
 
 // get posts
 export const getPosts = async (req, res) => {
@@ -16,6 +17,7 @@ export const getPosts = async (req, res) => {
         },
       },
     });
+
     res.status(200).json(posts);
   } catch (error) {
     res.status(500).json({ message: "failed to get posts" });
@@ -24,8 +26,7 @@ export const getPosts = async (req, res) => {
 
 // get post
 export const getPost = async (req, res) => {
-  const { id } = req.params;
-
+  const id = req.params.id;
   try {
     const post = await prisma.post.findUnique({
       where: { id },
@@ -40,16 +41,29 @@ export const getPost = async (req, res) => {
       },
     });
 
-    if (!post) {
-      return res.status(404).json({ message: "post not found" });
-    }
+    const token = req.cookies?.token;
 
-    res.status(200).json(post);
-  } catch (error) {
-    res.status(500).json({ message: "failed to get post" });
+    if (token) {
+      jwt.verify(token, process.env.JWT_SECRET_KEY, async (err, payload) => {
+        if (!err) {
+          const saved = await prisma.savedPost.findUnique({
+            where: {
+              userId_postId: {
+                postId: id,
+                userId: payload.id,
+              },
+            },
+          });
+          res.status(200).json({ ...post, isSaved: saved ? true : false });
+        }
+      });
+    }
+    res.status(200).json({ ...post, isSaved: false });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Failed to get post" });
   }
 };
-
 // create post
 export const createPost = async (req, res) => {
   const body = req.body;
