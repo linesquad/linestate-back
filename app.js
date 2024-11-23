@@ -20,7 +20,6 @@ app.use(express.json());
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
-app.use("/api/posts", postRoute);
 app.use("/api/auth", authRoute);
 app.use("/api/test", testRoute);
 app.use("/api/users", userRoute);
