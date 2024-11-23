@@ -67,7 +67,7 @@ export const createChat = async (req, res) => {
     });
     res.status(200).json(newChat);
   } catch (error) {
-    res.status(500).json({ message: "failed to create chat" });
+    res.status(500).json({ message: "failed to create chat" + error.message });
   }
 };
 
