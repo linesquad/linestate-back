@@ -29,6 +29,8 @@ app.use("/api/posts", postRoute);
 app.use("/api/messages", messageRoute);
 app.use("/api/chats", chatRoute);
 
+app.options("*", cors());
+
 const server = app.listen(process.env.PORT || 8000, () => {
   console.log(`Server is running on port ${process.env.PORT || 8000}`);
 });
