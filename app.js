@@ -28,8 +28,10 @@ app.use("/api/posts", postRoute);
 app.use("/api/messages", messageRoute);
 app.use("/api/chats", chatRoute);
 
-const server = app.listen(process.env.DEV_PORT || 8000, () => {
-  console.log(`Server is running on port ${process.env.DEV_PORT || 8000}`);
+const server = app.listen(process.env.PRODUCTION_PORT || 8000, () => {
+  console.log(
+    `Server is running on port ${process.env.PRODUCTION_PORT || 8000}`
+  );
 });
 
 io.attach(server);
